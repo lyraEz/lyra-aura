@@ -38,10 +38,10 @@ fun LogScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize().background(LavenderBg)) {
-        SmallTopAppBar(
+        TopAppBar(
             title = { Text("Gateway Log", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold) },
             navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back") } },
-            colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = LavenderBg),
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = LavenderBg),
         )
 
         if (logLines.isEmpty()) {

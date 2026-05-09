@@ -127,7 +127,6 @@ private fun ActivitySection(activity: DiscordActivity) {
                         contentDescription = activity.assets.largeText,
                         modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(10.dp)),
                         contentScale = ContentScale.Crop,
-                        error = { LargeImagePlaceholder(activity.assets.largeText) },
                     )
                     if (activity.assets.smallImage != null) {
                         Box(

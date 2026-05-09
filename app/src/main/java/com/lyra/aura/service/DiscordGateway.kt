@@ -128,7 +128,7 @@ class DiscordGateway @Inject constructor() {
             put("d", buildJsonObject {
                 put("token", token)
                 put("session_id", sessionId)
-                put("seq", sequence ?: JsonNull)
+                if (sequence != null) put("seq", sequence!!) else put("seq", JsonNull)
             })
         })
         log("Resume sent (session=$sessionId, seq=$sequence)")

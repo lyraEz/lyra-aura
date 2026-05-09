@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.*
 import com.lyra.aura.model.*
 import com.lyra.aura.ui.components.*
 import com.lyra.aura.ui.theme.LavenderBg
+import com.lyra.aura.ui.theme.LocalLyraColors
 import com.lyra.aura.viewmodel.MainViewModel
 import com.lyra.aura.viewmodel.PresenceViewModel
 
@@ -32,12 +33,6 @@ fun ConfigureScreen(
             selectedTabIndex = selectedTab,
             containerColor   = LavenderBg,
             edgePadding      = 16.dp,
-            indicator        = { tabPositions ->
-                TabRowDefaults.SecondaryIndicator(
-                    modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
-                    color    = MaterialTheme.colorScheme.primary,
-                )
-            },
         ) {
             tabs.forEachIndexed { index, label ->
                 Tab(

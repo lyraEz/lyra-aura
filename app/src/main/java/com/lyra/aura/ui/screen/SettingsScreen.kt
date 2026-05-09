@@ -12,8 +12,8 @@ import androidx.compose.ui.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import com.lyra.aura.model.AppSettings
-import com.lyra.aura.model.AppTheme
 import com.lyra.aura.ui.components.*
+import com.lyra.aura.ui.theme.AppTheme
 import com.lyra.aura.ui.theme.LavenderBg
 import com.lyra.aura.viewmodel.MainViewModel
 

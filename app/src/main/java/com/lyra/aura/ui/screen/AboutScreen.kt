@@ -38,10 +38,10 @@ fun AboutScreen(onBack: () -> Unit) {
             )
             .verticalScroll(rememberScrollState()),
     ) {
-        SmallTopAppBar(
+        TopAppBar(
             title = { Text("About", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold) },
             navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back") } },
-            colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
         )
 
         Column(

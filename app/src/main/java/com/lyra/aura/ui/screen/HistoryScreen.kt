@@ -28,7 +28,7 @@ fun HistoryScreen(
     val history by mainViewModel.history.collectAsState(emptyList())
 
     Column(modifier = Modifier.fillMaxSize().background(LavenderBg)) {
-        SmallTopAppBar(
+        TopAppBar(
             title = { Text("Presence History", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold) },
             navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back") } },
             actions = {
@@ -36,7 +36,7 @@ fun HistoryScreen(
                     IconButton(onClick = { mainViewModel.clearHistory() }) { Icon(Icons.Default.DeleteSweep, "Clear all") }
                 }
             },
-            colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = LavenderBg),
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = LavenderBg),
         )
 
         if (history.isEmpty()) {

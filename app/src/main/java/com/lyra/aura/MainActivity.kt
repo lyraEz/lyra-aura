@@ -31,9 +31,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.lyra.aura.model.AppSettings
-import com.lyra.aura.model.AppTheme
 import com.lyra.aura.ui.navigation.LyraNavHost
 import com.lyra.aura.ui.navigation.Screen
+import com.lyra.aura.ui.theme.AppTheme
 import com.lyra.aura.ui.theme.LavenderBg
 import com.lyra.aura.ui.theme.LyraAuraTheme
 import com.lyra.aura.viewmodel.MainViewModel
