@@ -3,12 +3,15 @@ package com.lyra.aura.ui.screen
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import com.lyra.aura.model.AppSettings
@@ -16,6 +19,7 @@ import com.lyra.aura.ui.components.*
 import com.lyra.aura.ui.theme.AppTheme
 import com.lyra.aura.ui.theme.LavenderBg
 import com.lyra.aura.viewmodel.MainViewModel
+import java.io.File
 
 @Composable
 fun SettingsScreen(
@@ -24,9 +28,13 @@ fun SettingsScreen(
     onNavigateAbout: () -> Unit,
     onNavigateLog: () -> Unit,
 ) {
+    val context = LocalContext.current
     val settings by mainViewModel.settings.collectAsState(AppSettings())
     val user by mainViewModel.currentUser.collectAsState()
     var showDisconnectTimerDialog by remember { mutableStateOf(false) }
+    val crashLogFile = remember { File(context.filesDir, "last_crash.txt") }
+    var crashLogText by remember { mutableStateOf("") }
+    var showCrashDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -240,6 +248,62 @@ fun SettingsScreen(
                 }
                 Icon(Icons.Default.ChevronRight, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
+        }
+
+        if (crashLogFile.exists()) {
+            GlassCard(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    crashLogText = runCatching { crashLogFile.readText() }.getOrDefault("Could not read crash log.")
+                    showCrashDialog = true
+                },
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Icon(Icons.Outlined.BugReport, null, tint = MaterialTheme.colorScheme.error)
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("Crash Log Available", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error)
+                        Text("Tap to view — share with developer", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    Icon(Icons.Default.ChevronRight, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+        }
+
+        if (showCrashDialog) {
+            AlertDialog(
+                onDismissRequest = { showCrashDialog = false },
+                title = { Text("Crash Log", style = MaterialTheme.typography.titleMedium) },
+                text = {
+                    Column {
+                        Text("Share this with the developer to fix the crash.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Spacer(Modifier.height(12.dp))
+                        Surface(
+                            shape = RoundedCornerShape(10.dp),
+                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                            modifier = Modifier.fillMaxWidth().heightIn(max = 320.dp),
+                        ) {
+                            SelectionContainer {
+                                Text(
+                                    crashLogText.take(4000),
+                                    modifier = Modifier.padding(12.dp).verticalScroll(rememberScrollState()),
+                                    style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                                )
+                            }
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = { showCrashDialog = false }) { Text("Close") }
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        runCatching {
+                            val cm = context.getSystemService(android.content.ClipboardManager::class.java)
+                            cm?.setPrimaryClip(android.content.ClipData.newPlainText("Crash Log", crashLogText))
+                        }
+                    }) { Text("Copy All") }
+                },
+            )
         }
 
         // ── About ─────────────────────────────────────────────────────────
