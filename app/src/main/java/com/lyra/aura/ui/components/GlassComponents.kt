@@ -35,9 +35,19 @@ fun GlassCard(
 ) {
     val lyraColors = LocalLyraColors.current
     val shape = RoundedCornerShape(cornerRadius)
+    val pulse by rememberInfiniteTransition(label = "liquid-card-pulse").animateFloat(
+        initialValue = 0.82f,
+        targetValue = 1.0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 2600, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "liquid-card-highlight",
+    )
 
     val baseModifier = modifier
-        .drawBehind { drawGlassBackground(lyraColors, shape, size) }
+        .shadow(18.dp, shape = shape, ambientColor = lyraColors.shimmer.copy(alpha = 0.18f), spotColor = lyraColors.shimmer.copy(alpha = 0.22f))
+        .drawBehind { drawGlassBackground(lyraColors, shape, size, pulse) }
         .border(
             // Use a solid border instead of a diagonal linearGradient.  The previous
             // implementation used Float.MAX_VALUE as the gradient end point, which
@@ -65,14 +75,14 @@ fun GlassCard(
     }
 }
 
-private fun DrawScope.drawGlassBackground(lyraColors: LyraColors, shape: RoundedCornerShape, size: androidx.compose.ui.geometry.Size) {
+private fun DrawScope.drawGlassBackground(lyraColors: LyraColors, shape: RoundedCornerShape, size: androidx.compose.ui.geometry.Size, pulse: Float = 1f) {
     val cornerPx = shape.topStart.toPx(size, this)
     drawRoundRect(
         brush = Brush.linearGradient(
             colors = listOf(
-                lyraColors.glassHighlight,
-                lyraColors.glassTint,
-                lyraColors.glassTint.copy(alpha = lyraColors.glassTint.alpha * 0.5f),
+                lyraColors.glassHighlight.copy(alpha = (lyraColors.glassHighlight.alpha * pulse).coerceIn(0f, 1f)),
+                lyraColors.glassTint.copy(alpha = (lyraColors.glassTint.alpha * 1.15f).coerceIn(0f, 1f)),
+                lyraColors.glassTint.copy(alpha = (lyraColors.glassTint.alpha * 0.45f).coerceIn(0f, 1f)),
             ),
             start = Offset(0f, 0f),
             end   = Offset(size.width, size.height),
@@ -93,6 +103,7 @@ fun GlassSurface(
     val shape = RoundedCornerShape(cornerRadius)
     Box(
         modifier = modifier
+            .shadow(24.dp, shape = shape, ambientColor = lyraColors.shimmer.copy(alpha = 0.16f), spotColor = lyraColors.shimmer.copy(alpha = 0.20f))
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(

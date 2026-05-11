@@ -1,6 +1,8 @@
 package com.lyra.aura.ui.screen
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.webkit.*
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
@@ -12,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
@@ -29,6 +32,7 @@ fun LoginScreen(
 ) {
     var showWebView by remember { mutableStateOf(false) }
     val hasToken = mainViewModel.hasToken()
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -143,7 +147,7 @@ fun LoginScreen(
 
                 Text("Lyra Aura", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
                 Text(
-                    "Login to your Discord account to enable Rich Presence",
+                    "Liquid Glass client for Discord Rich Presence experiments",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -173,11 +177,23 @@ fun LoginScreen(
                 } else {
                     Button(
                         onClick = { showWebView = true },
-                        modifier = Modifier.fillMaxWidth().height(56.dp),
-                        shape = RoundedCornerShape(18.dp),
+                        modifier = Modifier.fillMaxWidth().height(58.dp),
+                        shape = RoundedCornerShape(24.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = DiscordBlurple),
                     ) {
-                        Text("Login with Discord", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = androidx.compose.ui.graphics.Color.White)
+                        Text("Login with Discord WebView", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = androidx.compose.ui.graphics.Color.White)
+                    }
+
+                    OutlinedButton(
+                        onClick = {
+                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.com/login")))
+                        },
+                        modifier = Modifier.fillMaxWidth().height(54.dp),
+                        shape = RoundedCornerShape(24.dp),
+                    ) {
+                        Icon(Icons.Default.OpenInBrowser, null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("Abrir Discord no navegador")
                     }
                 }
 

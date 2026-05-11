@@ -2,13 +2,16 @@ package com.lyra.aura.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 enum class AppTheme { LAVENDER_DARK, AMOLED, LAVENDER_LIGHT, SYSTEM }
 
@@ -75,6 +78,14 @@ data class LyraColors(
     val shimmer: Color,
 )
 
+private val LyraLiquidShapes = Shapes(
+    extraSmall = RoundedCornerShape(14.dp),
+    small      = RoundedCornerShape(18.dp),
+    medium     = RoundedCornerShape(24.dp),
+    large      = RoundedCornerShape(32.dp),
+    extraLarge = RoundedCornerShape(40.dp),
+)
+
 val LocalLyraColors = staticCompositionLocalOf {
     LyraColors(
         glassTint      = GlassTint.copy(alpha = 0.08f),
@@ -105,11 +116,11 @@ fun LyraAuraTheme(
 
     val lyraColors = if (isDark) {
         LyraColors(
-            glassTint      = GlassTint.copy(alpha = 0.09f),
-            glassBorder    = GlassBorder.copy(alpha = 0.22f),
-            glassHighlight = GlassHighlight.copy(alpha = 0.12f),
+            glassTint      = GlassTint.copy(alpha = 0.16f),
+            glassBorder    = GlassBorder.copy(alpha = 0.38f),
+            glassHighlight = GlassHighlight.copy(alpha = 0.24f),
             cardSurface    = if (appTheme == AppTheme.AMOLED) AmoledSurface else LavenderSurface,
-            shimmer        = LavenderPrimary.copy(alpha = 0.35f),
+            shimmer        = LavenderPrimary.copy(alpha = 0.55f),
         )
     } else {
         LyraColors(
@@ -125,6 +136,7 @@ fun LyraAuraTheme(
         MaterialTheme(
             colorScheme = colorScheme,
             typography  = LyraTypography,
+            shapes      = LyraLiquidShapes,
             content     = content,
         )
     }

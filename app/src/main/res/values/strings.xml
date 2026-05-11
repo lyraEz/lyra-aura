@@ -17,7 +17,7 @@
     <string name="credits_inspiration">Inspired by Kizzy (Vaibhav)</string>
     <string name="credits_fork_author">Fork by lyraEz — github.com/lyraEz</string>
     <string name="credits_original_repo">Original: github.com/JasonBenfrin/Discord-Rich-Presence-Android</string>
-    <string name="app_version">Version 1.0.0</string>
+    <string name="app_version">Version 1.0.1</string>
 
     <!-- Discord ToS Warning -->
     <string name="tos_warning_title">Important Warning</string>
