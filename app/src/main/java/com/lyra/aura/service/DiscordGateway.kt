@@ -20,12 +20,7 @@ class DiscordGateway @Inject constructor() {
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
 
     private val client = OkHttpClient.Builder()
-        // Configure an explicit ping interval to keep the WebSocket connection alive.
-        // A zero ping interval disables client‑initiated pings. On some versions of OkHttp,
-        // explicitly passing 0 can trigger an IllegalArgumentException at runtime.
-        // Set a reasonable 30‑second interval instead to avoid startup crashes and ensure
-        // the connection stays healthy.
-        .pingInterval(30, TimeUnit.SECONDS)
+        .pingInterval(0, TimeUnit.SECONDS)
         .build()
 
     private var webSocket: WebSocket? = null
