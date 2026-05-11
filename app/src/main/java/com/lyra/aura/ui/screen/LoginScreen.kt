@@ -68,52 +68,41 @@ fun LoginScreen(
                         .fillMaxSize()
                         .clip(RoundedCornerShape(0.dp)),
                     factory = { ctx ->
-                        // Configure a WebView capable of rendering Discord's login page.  Discord's site
-                        // relies heavily on JavaScript, multiple windows and third‑party cookies, so we
-                        // explicitly enable these features.  Without these flags the WebView may render
-                        // a blank white screen instead of the login form.
-                        WebView(ctx).apply {
-                            settings.apply {
-                                // Enable JavaScript and local storage, both required for Discord's SPA.
-                                javaScriptEnabled = true
-                                domStorageEnabled = true
-                                databaseEnabled   = true
-                                // Allow pop‑ups and multiple windows (Discord uses window.open to handle
-                                // some OAuth flows).
-                                setSupportMultipleWindows(true)
-                                javaScriptCanOpenWindowsAutomatically = true
-                                // Permit mixed content so that HTTP fallback endpoints (e.g. avatar CDN)
-                                // don't get blocked on older Android versions.
-                                mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-                                // Provide a modern user agent similar to a mobile Chrome browser.  Some
-                                // websites display simplified pages if they detect an outdated UA.
-                                userAgentString =
-                                    "Mozilla/5.0 (Linux; Android ${Build.VERSION.RELEASE}; " +
-                                    "${Build.MODEL}) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                                    "Chrome/120.0.0.0 Mobile Safari/537.36"
-                            }
-                            // Accept first‑ and third‑party cookies.  Discord's auth flow stores
-                            // session tokens in cookies, and third‑party cookies are disabled by
-                            // default on WebView.  Without enabling them, the login page may not load.
-                            CookieManager.getInstance().apply {
-                                setAcceptCookie(true)
-                                setAcceptThirdPartyCookies(this@apply, true)
-                            }
-                            // Use a WebChromeClient to handle new window requests and progress bars.
-                            webChromeClient = object : WebChromeClient() {}
-                            // Basic WebViewClient so we don't leave the app when navigating inside the
-                            // login page.
-                            webViewClient = object : WebViewClient() {
-                                override fun shouldOverrideUrlLoading(
-                                    view: WebView?,
-                                    request: WebResourceRequest?
-                                ): Boolean {
-                                    return false
-                                }
-                            }
-                            // Finally load Discord's login page.
-                            loadUrl("https://discord.com/login")
+                        // Configure a WebView capable of rendering Discord's login page. Discord's site
+                        // relies heavily on JavaScript, local storage and cookies. Without these flags
+                        // the WebView may render a blank white screen instead of the login form.
+                        val webView = WebView(ctx)
+
+                        webView.settings.apply {
+                            javaScriptEnabled = true
+                            domStorageEnabled = true
+                            databaseEnabled = true
+                            setSupportMultipleWindows(true)
+                            javaScriptCanOpenWindowsAutomatically = true
+                            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                            userAgentString =
+                                "Mozilla/5.0 (Linux; Android ${android.os.Build.VERSION.RELEASE}; " +
+                                "${android.os.Build.MODEL}) AppleWebKit/537.36 (KHTML, like Gecko) " +
+                                "Chrome/120.0.0.0 Mobile Safari/537.36"
                         }
+
+                        // Android WebView disables third-party cookies by default; Discord login needs
+                        // cookie/session support, so enable it for this WebView instance.
+                        CookieManager.getInstance().apply {
+                            setAcceptCookie(true)
+                            setAcceptThirdPartyCookies(webView, true)
+                        }
+
+                        webView.webChromeClient = object : WebChromeClient() {}
+                        webView.webViewClient = object : WebViewClient() {
+                            override fun shouldOverrideUrlLoading(
+                                view: WebView?,
+                                request: WebResourceRequest?
+                            ): Boolean = false
+                        }
+
+                        webView.loadUrl("https://discord.com/login")
+                        webView
                     },
                 )
             }
