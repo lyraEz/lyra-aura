@@ -1,26 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Lyra Aura</string>
-
-    <!-- Notification -->
-    <string name="notification_service_channel_id">lyra_presence_service</string>
-    <string name="notification_service_channel_name">Presence Service</string>
-    <string name="notification_service_channel_desc">Shows while Lyra Aura keeps your Discord presence active</string>
-    <string name="notification_error_channel_id">lyra_presence_error</string>
-    <string name="notification_error_channel_name">Presence Errors</string>
-    <string name="notification_error_channel_desc">Alerts when something goes wrong with your presence</string>
-    <string name="notification_running_title">Lyra Aura — Active</string>
-    <string name="notification_running_text">Your Discord presence is live</string>
-
-    <!-- Credits & About -->
-    <string name="credits_original_author">Original concept by JasonBenfrin</string>
-    <string name="credits_inspiration">Inspired by Kizzy (Vaibhav)</string>
-    <string name="credits_fork_author">Fork by lyraEz — github.com/lyraEz</string>
-    <string name="credits_original_repo">Original: github.com/JasonBenfrin/Discord-Rich-Presence-Android</string>
-    <string name="app_version">Version 1.0.1</string>
-
-    <!-- Discord ToS Warning -->
-    <string name="tos_warning_title">Important Warning</string>
-    <string name="tos_warning_body">This app uses your Discord user token to set a Rich Presence. Using user tokens for automation may violate Discord\'s Terms of Service and could result in account suspension. Use at your own risk for educational purposes only.</string>
-    <string name="tos_warning_accept">I Understand</string>
+    <string name="app_name">Aura Finance</string>
 </resources>
