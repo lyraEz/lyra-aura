@@ -38,18 +38,12 @@ fun GlassCard(
 
     val baseModifier = modifier
         .drawBehind { drawGlassBackground(lyraColors, shape, size) }
+        // Avoid infinite LinearGradient on rounded borders. Android 16 / Samsung can
+        // crash inside android.graphics.LinearGradient when Compose records this shader.
         .border(
             border = BorderStroke(
                 width = 1.dp,
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        lyraColors.glassHighlight,
-                        lyraColors.glassBorder,
-                        lyraColors.glassTint,
-                    ),
-                    start = Offset(0f, 0f),
-                    end   = Offset(Float.MAX_VALUE, Float.MAX_VALUE),
-                )
+                color = lyraColors.glassBorder.copy(alpha = 0.42f),
             ),
             shape = shape,
         )
@@ -108,12 +102,7 @@ fun GlassSurface(
             .border(
                 BorderStroke(
                     1.dp,
-                    Brush.linearGradient(
-                        listOf(
-                            lyraColors.glassHighlight,
-                            lyraColors.glassBorder.copy(alpha = 0.1f),
-                        )
-                    )
+                    lyraColors.glassBorder.copy(alpha = 0.32f),
                 ),
                 shape,
             )

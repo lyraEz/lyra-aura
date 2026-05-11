@@ -20,7 +20,7 @@ class DiscordGateway @Inject constructor() {
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
 
     private val client = OkHttpClient.Builder()
-        .pingInterval(0, TimeUnit.SECONDS)
+        .pingInterval(30, TimeUnit.SECONDS)
         .build()
 
     private var webSocket: WebSocket? = null
